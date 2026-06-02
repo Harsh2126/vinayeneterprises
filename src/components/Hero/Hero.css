@@ -80,18 +80,22 @@
 .trust-badges {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
 .trust-badges span {
-  background: var(--bg-cream);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--bg-white);
   color: var(--text-dark);
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 0.4rem 0.9rem;
-  border-radius: 20px;
-  border: 1px solid var(--border-light);
-  letter-spacing: 0.03em;
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.6rem 1.1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  letter-spacing: 0.02em;
 }
 
 /* Right */
