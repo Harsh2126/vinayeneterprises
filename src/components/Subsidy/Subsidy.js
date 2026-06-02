@@ -61,7 +61,7 @@ const Subsidy = () => {
 
         <div className="subsidy-cta">
           <p>We are a government-approved vendor. Get your subsidy processed hassle-free!</p>
-          <a href="#contact" className="btn btn-primary">Apply for Subsidy</a>
+          <a href="#contact" className="btn btn-filled">Apply for Subsidy</a>
         </div>
       </div>
     </section>

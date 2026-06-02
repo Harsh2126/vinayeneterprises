@@ -3,120 +3,84 @@ import { contactInfo } from '../../data/content';
 import './Contact.css';
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
-  const [status, setStatus] = useState(null); // null, 'submitting', 'success', 'error'
+  const [formData, setFormData] = useState({ name: '', phone: '', city: '', service: '', message: '' });
+  const [status, setStatus] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('submitting');
-
-    const FORMSPREE_ENDPOINT = 'https://formspree.io/f/xbdzgjbv';
-
     try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
+      const res = await fetch('https://formspree.io/f/xbdzgjbv', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone,
-          message: formData.message
-        })
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(formData),
       });
-
-      if (response.ok) {
+      if (res.ok) {
         setStatus('success');
-        setFormData({ name: '', email: '', phone: '', message: '' });
-        alert('Thank you for your inquiry! We will contact you soon.');
+        setFormData({ name: '', phone: '', city: '', service: '', message: '' });
+        alert('Thank you! We will contact you soon.');
       } else {
         setStatus('error');
         alert('Something went wrong. Please try again.');
       }
-    } catch (error) {
+    } catch {
       setStatus('error');
       alert('Something went wrong. Please try again.');
     }
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
   return (
     <section id="contact" className="contact">
       <div className="container">
-        <div className="section-header">
-          <h2>Get in Touch</h2>
-          <p>Ready to go solar? Contact us for a free consultation</p>
-        </div>
-        <div className="contact-content">
-          <div className="contact-info">
-            <div className="info-card">
-              <div className="info-icon">📍</div>
-              <h4>Visit Us</h4>
-              <p>{contactInfo.address}</p>
-            </div>
-            <div className="info-card">
-              <div className="info-icon">📞</div>
-              <h4>Call Us</h4>
-              <p>{contactInfo.phone[0]}<br/>{contactInfo.phone[1]}</p>
-            </div>
-            <div className="info-card">
-              <div className="info-icon">✉️</div>
-              <h4>Email Us</h4>
-              <p>{contactInfo.email[0]}<br/>{contactInfo.email[1]}</p>
-            </div>
-            <div className="info-card">
-              <div className="info-icon">🕒</div>
-              <h4>Business Hours</h4>
-              <p>{contactInfo.hours}</p>
+        <div className="contact-wrapper">
+          {/* Info Panel */}
+          <div className="contact-info animate">
+            <h2>Get in Touch</h2>
+            <p>Ready to go solar? Contact us for a free consultation and site visit.</p>
+            <div className="info-items">
+              <div className="info-item">
+                <span className="info-label">📍 Address</span>
+                <span>{contactInfo.address}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">📞 Phone</span>
+                <span>{contactInfo.phone[0]}<br />{contactInfo.phone[1]}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">✉️ Email</span>
+                <span>{contactInfo.email[0]}</span>
+              </div>
+              <div className="info-item">
+                <span className="info-label">🕒 Hours</span>
+                <span>{contactInfo.hours}</span>
+              </div>
             </div>
           </div>
-          <form className="contact-form" onSubmit={handleSubmit}>
-            <h3>Request a Quote</h3>
+
+          {/* Form */}
+          <form className="contact-form animate delay-1" onSubmit={handleSubmit}>
+            <h3>Request a Free Quote</h3>
             <div className="form-row">
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name *"
-                value={formData.name}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="tel"
-                name="phone"
-                placeholder="Phone Number *"
-                value={formData.phone}
-                onChange={handleChange}
-                required
-              />
+              <input type="text" name="name" placeholder="Your Name *" value={formData.name} onChange={handleChange} required />
+              <input type="tel" name="phone" placeholder="Phone Number *" value={formData.phone} onChange={handleChange} required />
             </div>
-            <input
-              type="email"
-              name="email"
-              placeholder="Email Address *"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <textarea
-              name="message"
-              placeholder="Tell us about your requirements..."
-              rows="5"
-              value={formData.message}
-              onChange={handleChange}
-              required
-            ></textarea>
-            <button 
-              type="submit" 
-              className="btn btn-primary btn-large"
-              disabled={status === 'submitting'}
-            >
-              {status === 'submitting' ? 'Sending...' : 'Send Inquiry'}
+            <div className="form-row">
+              <input type="text" name="city" placeholder="Your City *" value={formData.city} onChange={handleChange} required />
+              <select name="service" value={formData.service} onChange={handleChange} required>
+                <option value="">Type of Service *</option>
+                <option value="Solar Panel Installation">Solar Panel Installation</option>
+                <option value="Solar Consultancy">Solar Consultancy</option>
+                <option value="Inverter & Battery Solutions">Inverter &amp; Battery Solutions</option>
+                <option value="Solar Energy Audit">Solar Energy Audit</option>
+                <option value="Repair & Maintenance">Repair &amp; Maintenance</option>
+                <option value="Subsidy Assistance">Subsidy Assistance</option>
+              </select>
+            </div>
+            <textarea name="message" placeholder="Tell us about your requirements..." rows="4" value={formData.message} onChange={handleChange}></textarea>
+            <button type="submit" className="btn btn-filled form-submit" disabled={status === 'submitting'}>
+              {status === 'submitting' ? 'Submitting…' : 'Submit Request'}
             </button>
           </form>
         </div>
